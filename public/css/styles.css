@@ -1,6 +1,377 @@
-/******* Change Box Model ***************/
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    background: url('/images/site/small_check.jpg') repeat;
+    margin: 0;
+    padding: 0;
+}
+
+.entryText h1 {
+    margin-top: 40px;
+    font-size: 1.7rem;
+    font-family: var(--font-heading);
+}
+
+#wrapper {
+    background-color: white;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 5px solid #00b3e6;
+    border-radius: 15px;
+    max-width: 1090px;
+    padding: 0 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+#top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.siteName a {
+    font-size: 2rem;
+    color: #000;
+    text-decoration: none;
+}
+
+#tools a {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #1a1a1a;
+    padding: 0.3rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0 8rem;
+}
+
+nav ul li {
+    padding: 0.5rem 0;
+    padding: 5px;
+}
+
+nav ul li a {
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+}
+
+nav ul li:hover {
+    background: #00b3e6;
+    text-decoration: none;
+    padding: 5px;
+    transition: 0.6s;
+}
+
+nav ul li a:hover {
+    color: #000;
+    transition: 0.7s;
+}
+
+nav ul li.active {
+    color: #000;
+    background-color: #00b3e6;
+}
+
+nav ul li.active a {
+    color: #000;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    margin: 3rem 0;
+    margin-left: 7rem;
+}
+
+.hero img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hero-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 1rem;
+    margin: 1rem;
+    margin-left: -5rem;
+}
+
+.hero-text h3 {
+    color: #00b3e6;
+    margin-bottom: 1rem;
+}
+
+.hero-text ul {
+    list-style: none;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.button-blue {
+    background-color: #00b3e6;
+    color: #000;
+    border: none;
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.button-blue:hover {
+    background-color: #000;
+    color: #fff;
+    transition: 0.7s;
+}
+
+/* Content Section */
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Reviews Section */
+#reviews h2 {
+    margin-bottom: 1rem;
+}
+
+#reviews ul {
+    list-style: disc;
+    padding-left: 2rem;
+    margin-top: 3.4rem;
+    font-size: 1.4rem;
+}
+
+#reviews li {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    font-family: var(--font-body);
+}
+
+/* Upgrades Section */
+#upgrades h2 {
+    margin-bottom: 1rem;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1.4rem;
+  column-gap: 1rem;
+  padding: 0rem;
+  margin-top: 3.4rem;
+}
+
+
+.caption-image {
+    text-align: center;
+}
+
+.caption-image div {
+    background-color: #00b3e6;
+    width: 250px;
+    height: 110px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.caption-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.caption-image p a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 11rem;
+}
+
+.caption-image p a:hover {
+    color: #00b3e6 !important;
+    transition: 0.5s !important;
+}
+
+.caption-image p {
+    margin-top: 0.4rem;
+}
+
+/* Footer */
+footer {
+    text-align: left;
+    padding: 1.5rem 0;
+}
+
+/* Responsive Design ========================================================*/
+@media screen and (max-width: 1200px) {
+    #wrapper {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
+    .gallery {
+        gap: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 1050px) {
+    body {
+        background: white;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem;
+  }
+
+
+    #reviews {
+        order: 1;
+    }
+
+    #reviews h2 {
+        margin-bottom: -1.875rem;
+        margin-top: 2.5rem;
+    }
+
+    #upgrades {
+        order: 2;
+    }
+
+    #upgrades h2 {
+        margin-top: 0.8rem;
+        margin-bottom: 1.7rem;
+    }
+
+    .caption-image div {
+        background-color: #00b3e6;
+        width: 100%;
+        max-width: 420px;
+    }
+
+    #wrapper {
+        border: none;
+        padding: 0;
+        width: 100%;
+    }
+
+    nav ul {
+        padding: 0;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .caption-image div {
+        max-width: 320px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    nav ul li:last-child {
+        border-bottom: none;
+    }
+
+    .content {
+        padding: 0 0.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .caption-image div {
+        max-width: 100%;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+  }
+
+    .hero {
+        margin: 1rem 5rem;
+        margin-bottom: 5rem;
+    }
+
+    .hero img {
+        margin: 1rem 2rem;
+        max-width: 250px !important;
+    }
+
+    #wrapper {
+        padding: 0 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    .entryText h1 {
+      font-size: 1.6rem;
+  }
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.content > section {
+    width: 100%;
+}
+
+.gallery {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.caption-image {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

@@ -6,12 +6,19 @@
  * Require Statements
  *************************/
 const express = require("express")
-const expressLayouts = require("express-ejs-layouts"); 
+const expressLayouts = require("express-ejs-layouts");
 require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 
+/* ******************************************
+ * I'm trying To Set Dynamic Active Link Here
+ ********************************************/
+app.use((req, res, next) => {
+  res.locals.currentRoute = req.path;
+  next();
+});
 
 /* ***********************
  * View Engine and Templates
@@ -29,6 +36,11 @@ app.use(static)
 app.get("/", (req, res) => {
   res.render("index", {title: "Home"});
 })
+
+// Custom Route For Active Link
+app.get("/custom", (req, res) => {
+  res.render("custom", { title: "Custom" });
+});
 
 /* ***********************
  * Local Server Information
