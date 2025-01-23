@@ -1,3 +1,4 @@
+
 const invModel = require('../models/inventory-model');
 const Util = {};
 
@@ -25,10 +26,6 @@ Util.getNav = async function (req, res, next) {
 };
 
 module.exports = Util;
-
-
-
-
 
 
 /* **************************************
@@ -65,12 +62,28 @@ Util.buildClassificationGrid = async function(data){
   }
 
 
+/* **************************************
+ * Build the vehicle detail view HTML
+ * ************************************ */
+Util.buildVehicleDetail = async (vehicle) => {
+  let html = '<div class="vehicle-detail">'
+  html += `<img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" />`
+  html += `<h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>`
+  html += `<p class="price">Price: $${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}</p>`
+  html += `<p>Year: ${vehicle.inv_year}</p>`
+  html += `<p>Mileage: ${new Intl.NumberFormat("en-US").format(vehicle.inv_miles)} miles</p>`
+  html += `<p>Color: ${vehicle.inv_color}</p>`
+  html += `<p class="description">${vehicle.inv_description}</p>`
+  html += "</div>"
+  return html
+}
 
 
-
-  /* ****************************************
+/* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for
  * General Error Handling
  **************************************** */
-Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+Util.handleErrors = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+module.exports = Util

@@ -1,83 +1,26 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-</head>
-<body>
-    <% if (title) { %>
-        <h1><%= title %></h1>
-    <% } else { %>
-        <script>window.location = '/';</script>
-    <% } %>
-
-    <section>
-        <p><%- message %></p>
-    </section>
-
-</body>
-</html> -->
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><%= title %></title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            color: #333;
-        }
-        p{
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        h1 {
-            font-size: 4rem;
-            margin-top: -25px;
-            color: red;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        .button {
-            display: inline-block;
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | CSE 340 App</title>
+    <link rel="stylesheet" href="/css/error.css">
+
 </head>
 <body>
-    <div class="container">
-        <h1><%= title %></h1>
-        <p><%= message %></p>
-        <img src="/images/site/404.gif" alt="Confused Robot">
-        <p><strong> seems the page you're looking for doesn't exist.</strong></p>
-        <p><a href="/" class="button">Return to Homepage</a></p>
+    <div id="">
+
+        <main>
+            <h1><%= title %></h1>
+            <p><%= message %></p>
+            <img src="/images/site/404.gif" alt="Confused Robot">
+            <% if (title !== '404 Error') { %>
+                <p>Our team has been notified of this error. We apologize for the inconvenience.</p>
+            <% } %>
+            <a href="/" class="button">Return to Home</a>
+        </main>
+
     </div>
 </body>
 </html>
