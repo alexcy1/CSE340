@@ -243,7 +243,7 @@ footer {
   display: inline-block;
   padding: 6px 7px;
   color: #fff;
-  background-color: #e74c3c; /* Red color for error */
+  background-color: #5e0c03; /* Red color for error */
   border: none;
   border-radius: 5px;
   text-decoration: none;
@@ -617,12 +617,12 @@ img {
 
   .vehicle-detail .price {
     font-size: 1.8rem;
-    color: #009900;
+    color: #fff;
     font-weight: bold;
     margin-bottom: 1rem;
     grid-column: 2;
     grid-row: 2;
-    background-color: #e6ffe6;
+    background-color: #014601;
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -645,7 +645,7 @@ img {
   }
 
   .vehicle-detail .description {
-    background-color: #fff8e1;
+    background-color: #fcf7e7;
     border-radius: 8px;
     padding: 1rem;
     font-size: 1rem;

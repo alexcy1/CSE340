@@ -11,7 +11,7 @@ p{
 h1 {
     font-size: 4rem;
     margin-top: 5px;
-    color: red;
+    color: rgb(62, 1, 1);
 }
 .container {
     margin-top: 50px;
@@ -36,6 +36,4 @@ img {
 .button:hover {
     background-color: #0056b3;
 }
-
-
 
