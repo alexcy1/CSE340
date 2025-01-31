@@ -1,0 +1,162 @@
+<!--
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+<% } %>
+
+<form id="addClassificationForm" action="/inv/add-classification" method="post">
+    <label for="classification_name">Classification Name:</label>
+    <input type="text" id="classification_name" name="classification_name" required
+    pattern="^[a-zA-Z0-9]+$" value="<%= locals.classification_name %>">
+    <span>Classification name must not contain spaces or special characters</span>
+
+    <button type="submit">Add Classification</button>
+</form> -->
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/inventory.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title><%= title %></title>
+
+    <style>
+        .login-wrapper{
+            min-height: calc(100vh - 140px);
+        }
+
+        .login-container {
+            margin: 20px 0;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .login-wrapper {
+                min-height: 95vh; /* Adjust height */
+                padding: 60px 20px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .login-wrapper {
+                min-height: auto;
+                padding: 50px 15px;
+                margin-top: 20px;
+                margin-bottom: 5px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-wrapper {
+                min-height: auto;
+                padding: 40px 10px;
+                margin-top: 20px;
+                margin-bottom: -10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-wrapper {
+                min-height: auto;
+                padding: 30px 10px;
+            }
+
+            .login-container {
+                padding: 1.5rem;
+            }
+
+            button {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-container">
+            <i class="fa fa-plus"></i>
+
+            <!-- <% if (title) { %>
+                <h1><%= title %></h1>
+            <% } else { %>
+                <% res.redirect('/') %>
+            <% } %>
+
+            <%- messages() %>
+
+            <% if (errors) { %>
+                <ul class="notice">
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            <% } %> -->
+
+            <% if (title) { %>
+                <h1><%= title %></h1>
+            <% } else { %>
+                <% res.redirect('/') %>
+            <% } %>
+
+            <!-- Success Messages -->
+            <% if (messages && messages.success) { %>
+                <div class="success-message">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
+            <!-- Error Messages -->
+            <% if (messages && messages.error) { %>
+                <div class="error-message">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+
+            <!-- Validation Errors -->
+            <% if (errors && errors.length > 0) { %>
+                <div class="error-message">
+                    <ul class="notice">
+                        <% errors.forEach(error => { %>
+                            <li><%= error.msg %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <form id="addClassificationForm" action="/inv/add-classification" method="post">
+                <label for="classification_name">Classification Name: <span class="required">*</label>
+                <input type="text" id="classification_name" name="classification_name" required
+                 placeholder="Add New Vehicle Classification"
+                  pattern="^[a-zA-Z0-9]+$" value="<%= locals.classification_name %>">
+                <span class="input-hint">Classification name must not contain spaces or special characters</span>
+
+                <button type="submit">Add Classification</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

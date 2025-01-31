@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | CSE Motors</title>
+    <link rel="stylesheet" href="/css/account.css">
+    <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="register-container">
+            <% if (messages) { %>
+                <% messages() %>
+            <% } %>
+
+            <% if (errors) { %>
+                <ul class="notice">
+               <% errors.array().forEach(error => { %>
+                 <li><%= error.msg %></li>
+              <%  }) %>
+               </ul>
+              <% } %>
+
+            <h1><%= title %></h1>
+            <p class="required-indicator"><span>*</span> All fields are required</p>
+
+            <form action="/account/register" method="post">
+                <label for="account_firstname">First Name: <span class="required">*</span></label>
+                <input type="text" id="account_firstname" name="account_firstname" required
+                value="<%= locals.account_firstname %>" placeholder="Enter your first name">
+
+                <label for="account_lastname">Last Name: <span class="required">*</span></label>
+                <input type="text" id="account_lastname" name="account_lastname" required
+                value="<%= locals.account_lastname %>" placeholder="Enter your last name">
+
+                <label for="account_email">Email: <span class="required">*</span></label>
+                <input type="email" id="account_email" name="account_email" required
+                value="<%= locals.account_email %>" placeholder="Enter a valid email address">
+
+                <label for="account_password">Password: <span class="required">*</span></label>
+                <div class="password-container">
+                    <input type="password" id="account_password" name="account_password" required
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                    placeholder="Create a strong password">
+                    <i class="fa-solid fa-eye password-toggle" id="togglePassword"></i>
+                </div>
+                <span class="password-requirements">
+                    Password must be at least 12 characters and contain at least 1 capital letter, 1 number, and 1 special character
+                </span>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p>Already have an account? <a href="/account/login">Login</a></p>
+        </div>
+    </div>
+
+    <script></script>
+
+</body>
+</html>

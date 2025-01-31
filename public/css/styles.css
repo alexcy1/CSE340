@@ -243,7 +243,7 @@ footer {
   display: inline-block;
   padding: 6px 7px;
   color: #fff;
-  background-color: #5e0c03; /* Red color for error */
+  background-color: #5e0c03;
   border: none;
   border-radius: 5px;
   text-decoration: none;
@@ -254,11 +254,11 @@ footer {
 }
 
 .error-button:hover {
-  background-color: #c0392b; /* Darker red on hover */
+  background-color: #c0392b;
 }
 
 .error-button:active {
-  background-color: #a93226; /* Even darker red on active click */
+  background-color: #a93226;
 }
 
 .error-button:focus {
@@ -290,6 +290,21 @@ footer {
       padding: 0 1rem;
   }
 
+  .grid-container{
+    padding: 20px;
+  }
+
+  .siteName{
+    padding: 20px;
+  }
+
+  #tools{
+    padding: 20px;
+  }
+
+  .copyright{
+    padding: 20px;
+  }
 
     #reviews {
         order: 1;
@@ -410,7 +425,6 @@ img {
 
 
 
-
 /* VECHICLE LISTING PAGE ====================================================*/
 
 :root {
@@ -435,11 +449,24 @@ img {
 
   #inv-display {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+    justify-content: center;
     gap: 2rem;
     padding: 2rem;
     list-style-type: none;
-  }
+}
+
+#inv-display li {
+    width: 300px;
+}
+
+#inv-display img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+
 
   #inv-display li {
     background-color: var(--card-background);
@@ -588,7 +615,7 @@ img {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
-    margin: 1rem auto 0; /* Added top margin */
+    margin: 1rem auto 0;
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
     border-radius: 10px;
@@ -622,7 +649,7 @@ img {
     margin-bottom: 1rem;
     grid-column: 2;
     grid-row: 2;
-    background-color: #014601;
+    background-color: #0080a4;
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -707,9 +734,19 @@ img {
 
 
 
+  /* FLASH SUCCESS MESSAGE */
+  .flash-message.success {
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+    border: 1px solid #c3e6cb; /* Green border */
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
 
-  /* nav ul li a.active {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-  } */
+.flash-message.success:hover {
+    background-color: #c3e6cb; /* Slightly darker green on hover */
+}

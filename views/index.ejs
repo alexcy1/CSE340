@@ -3,6 +3,14 @@
 
     <section class="entryText">
         <h1>Welcome to CSE Motors!</h1>
+
+        <!-- TESTING ACCOUNT LOGIN | CAN BE DELETED FOR NOW: Display Flash Messages -->
+        <% if (messages && messages.success) { %>
+            <div class="flash-message success">
+                <%= messages.success %>
+            </div>
+        <% } %>
+
     </section>
 
     <section class="hero">
