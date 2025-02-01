@@ -284,6 +284,10 @@ footer {
         background: white;
     }
 
+    h1 {
+      text-align: center;
+    }
+
     .content {
       display: flex;
       flex-direction: column;
@@ -533,32 +537,51 @@ img {
     margin: 2rem 0;
   }
 
+
   /* Responsive adjustments */
-  @media (max-width: 768px) {
-    #inv-display {
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-
-    #inv-display img {
-      height: 150px;
-    }
-
-    .namePrice h2 {
-      font-size: 1rem;
-    }
+@media (max-width: 768px) {
+  #inv-display {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    justify-content: center;
   }
 
-  @media (max-width: 480px) {
-    #inv-display {
-      grid-template-columns: 1fr;
-    }
-
-    #inv-display img {
-      height: 180px;
-    }
+  #inv-display li {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
   }
+
+  #inv-display img {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .namePrice h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  #inv-display {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  #inv-display li {
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  #inv-display img {
+    height: 200px;
+  }
+}
 
   /* Beautiful, modern buttons */
   .button {
