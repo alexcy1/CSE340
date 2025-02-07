@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management | CSE Motors</title>
+    <link rel="stylesheet" href="/css/account.css">
+    <link rel="stylesheet" href="/css/management.css">
+    <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-container">
+            
+            <!-- Display Flash Messages -->
+            <% if (messages && messages.success) { %>
+                <div class="success-message">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
+            <% if (messages && messages.error) { %>
+                <div class="error-message">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+
+            <!-- Display Validation Errors -->
+            <% if (errors && errors.length > 0) { %>
+                <div class="error-message">
+                    <ul>
+                        <% errors.forEach(error => { %>
+                            <li><%= error.msg %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <!-- Dashboard Header -->
+            <header class="dashboard-header">
+                <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                <p>Welcome, <%= accountData.account_firstname %>!</p>
+            </header>
+
+            <!-- Dashboard Content -->
+            <section class="dashboard-content">
+                <!-- Account Information Section -->
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-user"></i> Account Information</h2>
+                    <p><strong>Name:</strong> <%= accountData.account_firstname %> <%= accountData.account_lastname %></p>
+                    <p><strong>Email:</strong> <%= accountData.account_email %></p>
+                    <p><strong>Account Type:</strong> <%= accountData.account_type %></p>
+                    <a href="/account/update/<%= accountData.account_id %>" class="btn-primary">Update Account</a>
+                </div>
+
+                <!-- Admin Tools Section (Only for Admin) -->
+                <% if (accountData.account_type === 'Admin') { %>
+                    <div class="dashboard-card">
+                        <h2><i class="fas fa-users-cog"></i> Admin Tools</h2>
+                        <a href="/account/manage-users" class="btn-primary">Manage Users</a>
+                    </div>
+                <% } %>
+
+                <!-- Employee Tools Section (Only for Employee and Admin) -->
+                <% if (accountData.account_type === 'Employee' || accountData.account_type === 'Admin') { %>
+                    <div class="dashboard-card">
+                        <h2><i class="fas fa-car"></i> Inventory Management</h2>
+                        <a href="/inv/" class="btn-primary">Manage Inventory</a>
+                    </div>
+                <% } %>
+
+                <!-- Client Tools Section (Only for Client) -->
+                <% if (accountData.account_type === 'Client') { %>
+                    <div class="dashboard-card">
+                        <h2><i class="fas fa-shopping-cart"></i> My Orders</h2>
+                        <p>View and manage your vehicle orders.</p>
+                        <a href="/orders" class="btn-primary">View Orders</a>
+                    </div>
+                <% } %>
+            </section>
+
+            <!-- Back to Home Link -->
+            <footer class="dashboard-footer">
+                <p><a href="/"><i class="fas fa-home"></i> Back to Home</a></p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

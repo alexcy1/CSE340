@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users | CSE Motors</title>
+    <link rel="stylesheet" href="/css/account.css">
+    <link rel="stylesheet" href="/css/management.css">
+    <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="manage-users-wrapper">
+        <div class="manage-users-container">
+            
+            <!-- Display Flash Messages -->
+            <% if (messages && messages.success) { %>
+                <div class="success-message">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
+            <% if (messages && messages.error) { %>
+                <div class="error-message">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+
+            <!-- Display Validation Errors -->
+            <% if (errors && errors.length > 0) { %>
+                <div class="error-message">
+                    <ul>
+                        <% errors.forEach(error => { %>
+                            <li><%= error.msg %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <h1>Manage Users</h1>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Account Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td><%= user.account_firstname %></td>
+                                <td><%= user.account_lastname %></td>
+                                <td><%= user.account_email %></td>
+                                <td><%= user.account_type %></td>
+                                <td>
+                                    <form action="/account/delete-user/<%= user.account_id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                        <button type="submit" class="delete-button">
+                                            <i class="fa fa-trash-o"></i> Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="manage-ac">
+                <a href="/account/" class="back-button">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                     Back to Account Management
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

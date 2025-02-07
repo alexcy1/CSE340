@@ -137,6 +137,16 @@ nav ul li.active a {
     font-size: 1.3rem;
 }
 
+a {
+  color: #0080a4;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #002834;
+  text-decoration: none;
+}
+
 .button-blue {
     background-color: #00b3e6;
     color: #000;
@@ -629,9 +639,6 @@ img {
   }
 
 
-
-
-
  /* VECHICLE DETAIL PAGE */
 
   .vehicle-detail {
@@ -759,9 +766,9 @@ img {
 
   /* FLASH SUCCESS MESSAGE */
   .flash-message.success {
-    background-color: #d4edda; /* Light green background */
-    color: #155724; /* Dark green text */
-    border: 1px solid #c3e6cb; /* Green border */
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
     border-radius: 5px;
     padding: 15px;
     margin: 10px 0;
@@ -771,5 +778,48 @@ img {
 }
 
 .flash-message.success:hover {
-    background-color: #c3e6cb; /* Slightly darker green on hover */
+    background-color: #c3e6cb;
+}
+
+
+/* LOGOUT */
+.logout {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff !important;
+  background: #5e0c03;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.logout:hover {
+  background: #c9302c;
+}
+
+.logout i {
+  margin-right: 8px;
+}
+
+/* LOGIN */
+.login {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff !important;
+  background: #0080a4;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.login:hover {
+  background: #000;
+}
+
+.login i {
+  margin-right: 8px;
 }

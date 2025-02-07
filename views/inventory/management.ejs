@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/inventory.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
@@ -18,10 +19,27 @@
         <%- messages() %>
 
         <div class="management-links">
-            <p><a href="/inv/add-classification"><i class="fas fa-plus"></i> Add New Classification</a></p>
-            <p><a href="/inv/add-inventory"><i class="fas fa-car"></i> Add New Vehicle</a></p>
-        </div>
-    </main>
+            <p class="cbtn"><a href="/inv/add-classification"><i class="fas fa-plus"></i> Add New Classification</a></p>
+            <p class="cbtn"><a href="/inv/add-inventory"><i class="fas fa-car"></i> Add New Vehicle</a></p>
+         </div>
 
+         <section class="manage-vehicle">
+            <h2 class="manageInventoryTitle">Manage Inventory</h2>
+            <p class="instruct">select a classification from the list to see the items belonging to the classification.</p>
+            <%- classificationSelect %>
+
+            <table id="inventoryDisplay"></table>
+            <noscript>JavaScript must be enabled to use this page.</noscript>
+         </section>
+
+         <p class="manage-ac">
+            <a href="/account/" class="back-button">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                 Back to Account Management
+            </a>
+        </p>
+
+    </main>
+    <script src="/js/inventory.js"></script>
 </body>
 </html>

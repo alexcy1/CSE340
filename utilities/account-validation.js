@@ -17,7 +17,7 @@ const accountModel = require("../models/account-model")
         .escape()
         .notEmpty()
         .isLength({ min: 1 })
-        .withMessage("Please provide a first name."), // on error this message is sent.
+        .withMessage("Please provide a first name."), 
 
       // lastname is required and must be string
       body("account_lastname")
@@ -25,7 +25,7 @@ const accountModel = require("../models/account-model")
         .escape()
         .notEmpty()
         .isLength({ min: 2 })
-        .withMessage("Please provide a last name."), // on error this message is sent.
+        .withMessage("Please provide a last name."),
 
       // valid email is required and cannot already exist in the DB
       body("account_email")
@@ -33,7 +33,7 @@ const accountModel = require("../models/account-model")
       .escape()
       .notEmpty()
       .isEmail()
-      .normalizeEmail() // refer to validator.js docs
+      .normalizeEmail()
       .withMessage("A valid email is required.")
       .custom(async (account_email) => {
         const emailExists = await accountModel.checkExistingEmail(account_email)
@@ -58,7 +58,8 @@ const accountModel = require("../models/account-model")
   }
 
 
-  /* ******************************
+
+/* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkRegData = async (req, res, next) => {
@@ -79,6 +80,7 @@ validate.checkRegData = async (req, res, next) => {
     }
     next()
   }
+
 
 
 /* **********************************
@@ -108,6 +110,7 @@ validate.loginRules = () => {
 };
 
 
+
 /* ******************************
  * Check Login Data and Return Errors or Continue
  * ***************************** */
@@ -128,5 +131,6 @@ validate.checkLoginData = async (req, res, next) => {
   }
   next();
 };
+
 
 module.exports = validate

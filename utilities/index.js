@@ -1,6 +1,10 @@
 
 const invModel = require('../models/inventory-model');
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 const Util = {};
+
+
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -26,15 +30,13 @@ Util.getNav = async function (req, res, next) {
     return list;
 };
 
-// module.exports = Util;
-
 
 
 /* **************************************
  * Build the classification view HTML
  * ************************************ */
 Util.buildClassificationGrid = async function (data) {
-    let grid = ''; // Ensure grid is initialized
+    let grid = '';
     if (data.length > 0) {
         grid = '<ul id="inv-display">';
         data.forEach((vehicle) => {
@@ -86,6 +88,7 @@ Util.buildClassificationGrid = async function (data) {
 };
 
 
+
 /* **************************************
  * Build the vehicle detail view HTML
  * ************************************ */
@@ -106,6 +109,7 @@ Util.buildVehicleDetail = async (vehicle) => {
     html += "</div>";
     return html;
 };
+
 
 
 /* ****************************************
@@ -146,4 +150,114 @@ Util.buildClassificationList = async function(classification_id = null){
   }
 
 
-  module.exports = Util
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+    if (req.cookies.jwt) {
+     jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+       if (err) {
+        req.flash("Please log in")
+        res.clearCookie("jwt")
+        return res.redirect("/account/login")
+       }
+       res.locals.accountData = accountData
+       res.locals.loggedin = 1
+       next()
+      })
+    } else {
+     next()
+    }
+   }
+
+
+
+/* ****************************************
+ * Middleware to check if user is logged in
+ **************************************** */
+Util.checkLogin = (req, res, next) => {
+    console.log("Checking if user is logged in")
+    if (res.locals.loggedin) {
+      console.log("User is logged in")
+      next()
+    } else {
+      console.log("User is not logged in, redirecting to login")
+      req.flash("notice", "Please log in.")
+      return res.redirect("/account/login")
+    }
+  }
+
+
+
+/* ****************************************
+ * Middleware to check and verify the JWT cookie.
+ **************************************** */
+  Util.checkJWTToken = (req, res, next) => {
+    if (req.cookies.jwt) {
+      jwt.verify(
+        req.cookies.jwt,
+        process.env.ACCESS_TOKEN_SECRET,
+        function (err, accountData) {
+          if (err) {
+            req.flash("Please log in");
+            res.clearCookie("jwt");
+            return res.redirect("/account/login");
+          }
+          res.locals.accountData = accountData; 
+          res.locals.loggedin = 1;
+          next();
+        }
+      );
+    } else {
+      next();
+    }
+  };
+
+
+
+/* ****************************************
+ * Middleware to check if user is Employee or Admin
+ **************************************** */
+Util.checkAdminOrEmployee = (req, res, next) => {
+  if (res.locals.loggedin) {
+    const accountType = res.locals.accountData.account_type
+    if (accountType === "Employee" || accountType === "Admin") {
+      next()
+    } else {
+      req.flash("error", "You do not have permission to access the Managment page. Please login as Admin/Employee to have access")
+      return res.redirect("/account/login")
+    }
+  } else {
+    req.flash("error", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
+
+
+
+// =========================== MY PROJECT IN VIEW =============================
+
+/* ****************************************
+ * Middleware to check if user is an Admin
+ **************************************** */
+Util.checkAdmin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    const accountType = res.locals.accountData.account_type;
+    if (accountType === "Admin") {
+      next();
+    } else {
+      req.flash("error", "You do not have permission to access this page. Please login as an Admin.");
+      return res.redirect("/account/");
+    }
+  } else {
+    req.flash("error", "Please log in.");
+    return res.redirect("/account/login");
+  }
+};
+
+
+module.exports = Util

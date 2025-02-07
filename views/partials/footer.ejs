@@ -1,7 +1,16 @@
+
 <% const d = new Date()
 let year = d.getFullYear() %>
 <footer>
+
   <p class="copyright">&copy; <%= year %>, CSE 340 App |
+
+  <% if (locals.accountData && (locals.accountData.account_type === 'Employee' || locals.accountData.account_type === 'Admin' || locals.accountData.account_type === 'Client')) { %>
+    <i class="fas fa-car"></i>
+    <a href="/account/">Manage Inventory</a> |
+  <% } %>
+
   <a href="/error/trigger-error">
     <span class="error-button">Trigger 500 Error</span></a> </p>
+
 </footer>

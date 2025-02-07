@@ -1,0 +1,233 @@
+/* Dashboard Wrapper */
+.dashboard-wrapper {
+    /* background: linear-gradient(135deg, #0D6EFD, #198754); */
+    background: #1e1e1e;
+    min-height: 100vh;
+    padding: 20px;
+    color: #F5F5F5;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    font-size: 2.1rem;
+    margin-bottom: 10px;
+    /* color: #f7cb49; */
+    color: #bef2ff;
+}
+
+.dashboard-header p {
+    font-size: 1.2rem;
+    color: #F5F5F5;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Dashboard Card */
+.dashboard-card {
+    background: rgba(55, 55, 55, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #bef2ff;
+    /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    padding: 15px; */
+}
+
+.dashboard-card p {
+    font-size: 1rem;
+    color: #F5F5F5;
+    margin-bottom: 15px;
+}
+
+.dashboard-card .btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0080a4;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-card .btn-primary:hover {
+    background: #d4d4d4;
+    color: #000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Dashboard Footer */
+.dashboard-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-footer a {
+    color: #bef2ff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.dashboard-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+
+    .dashboard-card h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Ensure the table is responsive */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+}
+
+thead {
+    background-color: #0080a4;
+    color: #fff;
+}
+
+th {
+    font-weight: bold;
+    padding: 12px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.delete-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #b02a37;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        table-layout: auto;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .delete-button {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        min-width: 600px;
+    }
+}
+
+/* Back to Account Management Button */
+.back-button {
+    display: inline-block;
+    background-color: #2f2f2f;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover Effect */
+.back-button:hover {
+    background-color: #0080a4;
+    transform: scale(1.05);
+    color: #fff;
+}
+
+.manage-ac{
+    margin-top: 30px;
+    margin-bottom: 40px;
+}

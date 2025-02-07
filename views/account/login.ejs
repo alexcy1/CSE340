@@ -11,7 +11,7 @@
 <body>
     <div class="login-wrapper">
         <div class="login-container">
-            <!-- Display Flash Messages -->
+
             <% if (messages && messages.success) { %>
                 <div class="success-message">
                     <%= messages.success %>
@@ -24,7 +24,7 @@
                 </div>
             <% } %>
 
-            <!-- Display Validation Errors -->
+
             <% if (errors && errors.length > 0) { %>
                 <div class="error-message">
                     <ul>
@@ -35,7 +35,7 @@
                 </div>
             <% } %>
 
-            <h1><%= title %></h1>
+            <h1><i class="fas fa-user"></i>  <%= title %></h1>
 
             <form id="loginForm" action="/account/login" method="post">
                 <label for="account_email">Email: <span class="required">*</span></label>

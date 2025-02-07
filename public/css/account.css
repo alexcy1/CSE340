@@ -13,8 +13,8 @@
     align-items: center;
     width: 100%;
     padding: 20px;
-    min-height: calc(100vh - 140px); /* Adjust for header and footer */
-    margin: 0 auto; /* Remove negative margins */
+    min-height: calc(100vh - 140px); 
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
@@ -27,7 +27,7 @@
     width: 100%;
     max-width: 540px;
     text-align: center;
-    margin: 20px 0; /* Add margin to push footer and header */
+    margin: 20px 0;
 }
 
 h1 {
@@ -75,7 +75,7 @@ button {
 }
 
 button:hover {
-    background: #764ba2;
+    background: #000;
 }
 
 /* Text Links */
@@ -87,13 +87,17 @@ p {
 a {
     color: #0080a4;
     text-decoration: none;
-    font-weight: bold;
+}
+
+a:hover {
+    color: #002834;
+    text-decoration: none;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
     .login-wrapper {
-        min-height: 95vh; /* Adjust height */
+        min-height: 95vh;
         padding: 60px 20px;
     }
 }
@@ -130,9 +134,6 @@ a {
         padding: 10px;
     }
 }
-
-
-
 
 /* Registration Form Styles */
 .register-wrapper {
@@ -243,7 +244,6 @@ a {
     color: #004e64;
 }
 
-
 /* SUCCESS AND ERROR */
 .success-message {
     background-color: #d4edda;
@@ -262,8 +262,6 @@ a {
     padding: 10px;
     margin-bottom: 15px;
 }
-
-
 
 /* VALIDITY INDICATOR */
 input:required:invalid {
@@ -288,7 +286,6 @@ input:required:valid {
     background-color: rgb(242, 255, 242);
 }
 
-
 /* Form Error */
 .notice {
     list-style: none;
@@ -308,7 +305,7 @@ input:required:valid {
 }
 
 .notice li::before {
-    content: "⚠ "; /* Warning icon */
+    content: "⚠ ";
     font-weight: bold;
     color: #d9534f;
 }
@@ -321,12 +318,12 @@ input:required:valid {
     border-radius: 4px;
     padding: 10px;
     margin-bottom: 15px;
-    list-style: none; /* Remove bullets */
+    list-style: none;
 }
 
 .error-message ul {
-    list-style: none; /* Remove bullets from nested <ul> */
-    padding-left: 0; /* Remove default padding */
+    list-style: none;
+    padding-left: 0;
 }
 
 .error-message li {
@@ -335,8 +332,55 @@ input:required:valid {
 }
 
 .error-message li::before {
-    content: "⚠ "; /* Warning icon */
+    content: "⚠ ";
     font-weight: bold;
     color: #d9534f;
-    margin-right: 8px; /* Add space between icon and text */
+    margin-right: 8px;
 }
+
+/* LOGOUT */
+.logout {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff !important;
+    background: #5e0c03;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.logout:hover {
+    background: #c9302c;
+}
+
+.logout i {
+    margin-right: 8px;
+}
+
+/* LOGIN */
+.login {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff !important;
+    background: #0080a4;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+
+  .login:hover {
+    background: #000;
+  }
+
+  .login i {
+    margin-right: 8px;
+  }
+
+
+  .password-requirements{
+    margin-top: 3px;
+  }

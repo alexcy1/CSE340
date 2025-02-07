@@ -17,6 +17,8 @@ const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute")
 
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
+
 
 
 
@@ -34,6 +36,11 @@ app.use(session({
   saveUninitialized: true,
   name: 'sessionId',
 }))
+
+
+// Middleware for JWT token verification and setting
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 
 // Express Messages Middleware
