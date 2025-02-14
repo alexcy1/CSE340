@@ -55,7 +55,68 @@ CREATE TABLE IF NOT EXISTS public.account
 );
 
 
+-- Table structure for table `OrderStatus`
+CREATE TABLE OrderStatus (
+    status_id SERIAL PRIMARY KEY,
+    status_name VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Table structure for table `Orders`
+CREATE TABLE Orders (
+    order_id SERIAL PRIMARY KEY,
+    account_id INT NOT NULL,
+    inv_id INT NOT NULL,
+    inv_make VARCHAR(50) NOT NULL,
+    inv_model VARCHAR(50) NOT NULL,
+    inv_year INT NOT NULL,
+    inv_description TEXT NOT NULL,
+    inv_image VARCHAR(255) NOT NULL,
+    inv_price NUMERIC(10, 2) NOT NULL,
+    inv_miles INT NOT NULL,
+    inv_color VARCHAR(50) NOT NULL,
+    status_id INT NOT NULL DEFAULT 1, -- Default to 'Pending' (status_id = 1)
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (inv_id) REFERENCES Inventory(inv_id) ON DELETE CASCADE,
+    FOREIGN KEY (status_id) REFERENCES OrderStatus(status_id)
+);
+
+-- Table structure for table `OrderStatusHistory`
+CREATE TABLE OrderStatusHistory (
+    history_id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,
+    status_id INT NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (status_id) REFERENCES OrderStatus(status_id),
+    FOREIGN KEY (updated_by) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+-- Table structure for table `contact_submissions`
+CREATE TABLE contact_submissions (
+  contact_id SERIAL PRIMARY KEY,
+  account_id INT REFERENCES account(account_id) ON DELETE CASCADE,
+  contact_name VARCHAR(100) NOT NULL,
+  contact_email VARCHAR(100) NOT NULL,
+  contact_message TEXT NOT NULL,
+  contact_file TEXT, -- Store file path or URL
+  contact_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 -- INSERT DATA INTO TABLE ===========================================
+
+-- Insert Data into `OrderStatus`
+INSERT INTO OrderStatus (status_name) VALUES
+('Pending'),
+('Approved'),
+('Declined'),
+('Processing'),
+('Shipped'),
+('Completed'),
+('Cancelled');
+
 
 -- Data for table 'classification'
 INSERT INTO public.classification (classification_name)

@@ -17,7 +17,7 @@ const accountModel = require("../models/account-model")
         .escape()
         .notEmpty()
         .isLength({ min: 1 })
-        .withMessage("Please provide a first name."), 
+        .withMessage("Please provide a first name."),
 
       // lastname is required and must be string
       body("account_lastname")
@@ -125,6 +125,61 @@ validate.checkLoginData = async (req, res, next) => {
       nav,
       errors: errors.array(),
       account_email,
+      messages: req.flash(),
+    });
+    return;
+  }
+  next();
+};
+
+
+
+// ====================================================================
+
+/* **********************************
+ * Contact Form Data Validation Rules
+ * ********************************* */
+validate.contactFormRules = () => {
+  return [
+    // Name is required and must be a string
+    body("contact_name")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 2 })
+      .withMessage("Please provide a valid name."),
+
+    // Email is required and must be valid
+    body("contact_email")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required."),
+
+    // Message is required
+    body("contact_message")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a message."),
+  ];
+};
+
+
+
+/* ******************************
+ * Check Contact Form Data and Return Errors or Continue
+ * ***************************** */
+validate.checkContactFormData = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("account/contact", {
+      title: "Contact Us",
+      nav,
+      errors: errors.array(),
       messages: req.flash(),
     });
     return;

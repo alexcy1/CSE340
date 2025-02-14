@@ -139,6 +139,34 @@ async function getAllUsers() {
 }
 
 
+
+/* *****************************
+ * Return users with orders (Admin only)
+ * ***************************** */
+async function getUsersWithOrders() {
+  try {
+    const sql = `
+      SELECT DISTINCT
+        a.account_id,
+        a.account_firstname,
+        a.account_lastname,
+        a.account_email
+      FROM account a
+      JOIN orders o ON a.account_id = o.account_id
+    `;
+
+    console.log("Executing SQL query:", sql);
+    const result = await pool.query(sql);
+    console.log("Query result:", result.rows);
+    return result.rows;
+  } catch (error) {
+    console.error("getUsersWithOrders error:", error);
+    return [];
+  }
+}
+
+
+
 /* *****************************
  * Delete a user by ID (Admin only)
  * ***************************** */
@@ -146,13 +174,167 @@ async function deleteUserById(account_id) {
   try {
     const sql = "DELETE FROM account WHERE account_id = $1";
     const result = await pool.query(sql, [account_id]);
-    return result.rowCount > 0; // Return true if a user was deleted
+    return result.rowCount > 0; 
   } catch (error) {
     console.error("deleteUserById error: " + error);
     return false;
   }
 }
 
+
+
+/* *****************************
+ * Delete a specific history item by ID
+ * ***************************** */
+async function deleteHistoryItem(history_id) {
+  try {
+    if (!history_id || isNaN(history_id)) {
+      return {
+        success: false,
+        message: "Invalid history item ID.",
+      };
+    }
+
+    const sql = "DELETE FROM order_history WHERE history_id = $1 RETURNING *";
+    const result = await pool.query(sql, [history_id]);
+
+    return {
+      success: result.rowCount > 0,
+      message: result.rowCount > 0 ? "History item deleted successfully." : "No history item found with the provided ID.",
+    };
+  } catch (error) {
+    console.error("deleteHistoryItem error:", error);
+    return {
+      success: false,
+      message: "An error occurred while deleting the history item.",
+    };
+  }
+}
+
+
+
+/* *****************************
+ * Delete all history items for a user or all users (Admin only)
+ * ***************************** */
+async function deleteAllHistory(account_id = null) {
+  try {
+    let sql;
+    let params;
+
+    if (account_id) {
+      // Delete history items for a specific user
+      sql = `
+        DELETE FROM order_history
+        WHERE order_id IN (
+          SELECT order_id FROM orders WHERE account_id = $1
+        )
+        RETURNING *
+      `;
+      params = [account_id];
+    } else {
+      // Delete all history items (Admin only)
+      sql = "DELETE FROM order_history RETURNING *";
+      params = [];
+    }
+
+    const result = await pool.query(sql, params);
+    return {
+      success: true,
+      message: `${result.rowCount} history items deleted successfully.`,
+      count: result.rowCount,
+    };
+  } catch (error) {
+    console.error("deleteAllHistory error:", error);
+    return {
+      success: false,
+      message: "An error occurred while deleting history items.",
+    };
+  }
+}
+
+
+
+/* *****************************
+ * Submit a contact form
+ * ***************************** */
+async function submitContactForm(account_id, contact_name, contact_email, contact_message, contact_file = null) {
+  try {
+    const sql = `
+      INSERT INTO contact_submissions (account_id, contact_name, contact_email, contact_message, contact_file)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+    const result = await pool.query(sql, [account_id, contact_name, contact_email, contact_message, contact_file]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("submitContactForm error:", error);
+    return null;
+  }
+}
+
+
+
+/* *****************************
+ * Get all contact submissions for a user
+ * ***************************** */
+async function getUserContactSubmissions(account_id) {
+  try {
+    const sql = "SELECT * FROM contact_submissions WHERE account_id = $1 ORDER BY contact_date DESC";
+    const result = await pool.query(sql, [account_id]);
+    return result.rows;
+  } catch (error) {
+    console.error("getUserContactSubmissions error:", error);
+    return null;
+  }
+}
+
+
+
+/* *****************************
+ * Get all contact submissions (Admin only)
+ * ***************************** */
+async function getAllContactSubmissions() {
+  try {
+    const sql = "SELECT * FROM contact_submissions ORDER BY contact_date DESC";
+    const result = await pool.query(sql);
+    return result.rows;
+  } catch (error) {
+    console.error("getAllContactSubmissions error:", error);
+    return null;
+  }
+}
+
+
+
+/* *****************************
+ * Get a specific contact submission by ID
+ * ***************************** */
+async function getContactSubmissionById(contact_id) {
+  try {
+    const sql = "SELECT * FROM contact_submissions WHERE contact_id = $1";
+    const result = await pool.query(sql, [contact_id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("getContactSubmissionById error:", error);
+    return null;
+  }
+}
+
+
+
+/* *****************************
+ * Delete a contact submission by ID
+ * ***************************** */
+async function deleteContactSubmission(contact_id) {
+  try {
+    const sql = "DELETE FROM contact_submissions WHERE contact_id = $1 RETURNING *";
+    const result = await pool.query(sql, [contact_id]);
+    return result.rowCount > 0;
+  } catch (error) {
+    console.error("deleteContactSubmission error:", error);
+    return false;
+  }
+}
 
 
 module.exports = {
@@ -165,5 +347,15 @@ module.exports = {
   updatePassword,
 
   getAllUsers,
-  deleteUserById
+  deleteUserById,
+  getUsersWithOrders,
+
+  deleteHistoryItem,
+  deleteAllHistory,
+
+  submitContactForm,
+  getUserContactSubmissions,
+  getAllContactSubmissions,
+  getContactSubmissionById,
+  deleteContactSubmission
 };

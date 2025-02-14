@@ -38,21 +38,25 @@ invCont.buildByClassificationId = async (req, res, next) => {
 }
 
 
+
 /* ***************************
  *  Build vehicle detail view
  * ************************** */
 invCont.buildByVehicleId = async (req, res, next) => {
-  const inv_id = req.params.invId
-  const data = await invModel.getVehicleById(inv_id)
-  const vehicleDetail = await utilities.buildVehicleDetail(data)
-  const nav = await utilities.getNav()
-  const vehicleName = `${data.inv_year} ${data.inv_make} ${data.inv_model}`
+  const inv_id = req.params.invId;
+  const data = await invModel.getVehicleById(inv_id);
+  const loggedin = res.locals.loggedin || false; // Get loggedin status from res.locals
+  const vehicleDetail = await utilities.buildVehicleDetail(data, loggedin); // Pass loggedin status
+  const nav = await utilities.getNav();
+  const vehicleName = `${data.inv_year} ${data.inv_make} ${data.inv_model}`;
+
   res.render("./inventory/detail", {
-    title: vehicleName,
-    nav,
-    vehicleDetail,
-  })
-}
+      title: vehicleName,
+      nav,
+      vehicleDetail,
+  });
+};
+
 
 
 /* ***************************
@@ -68,6 +72,7 @@ invCont.buildManagement = async function (req, res, next) {
     errors: null,
   })
 }
+
 
 
 /* ***************************
@@ -122,21 +127,6 @@ invCont.buildDeleteConfirmationView = async function (req, res, next) {
 };
 
 
-/* ***************************
- *  Delete Inventory Item
- * ************************** */
-// invCont.deleteInventoryItem = async function (req, res, next) {
-//   const inv_id = parseInt(req.body.inv_id);
-//   const deleteResult = await invModel.deleteInventoryItem(inv_id);
-
-//   if (deleteResult) {
-//     req.flash("success", "The inventory item was successfully deleted.");
-//     res.redirect("/inv");
-//   } else {
-//     req.flash("error", "Sorry, the delete failed.");
-//     res.redirect(`/inv/delete/${inv_id}`);
-//   }
-// };
 
 /* ************************************
  *  Delete Inventory And Classification on last inventory Item
@@ -176,6 +166,7 @@ invCont.deleteInventoryItem = async function (req, res, next) {
 };
 
 
+
 /* ***************************
  *  Process add classification
  * ************************** */
@@ -211,6 +202,7 @@ invCont.addClassification = async (req, res, next) => {
 }
 
 
+
 /* ***************************
  *  Build add inventory view
  * ************************** */
@@ -224,6 +216,7 @@ invCont.buildAddInventory = async function (req, res, next) {
     errors: null,
   })
 }
+
 
 
 /* ***************************

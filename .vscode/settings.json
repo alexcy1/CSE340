@@ -12,6 +12,20 @@
             "driver": "PostgreSQL",
             "name": "render",
             "connectString": "postgresql://classcse340demo:uoyacolRbBEFQyvdqqF4dHz2bKAhhYNJ@dpg-cu35fbpopnds7382bbug-a.oregon-postgres.render.com/classcse340demo"
+        },
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "database": "classcse340demo_e8fa",
+            "username": "classcse340demo",
+            "name": "render.com",
+            "connectString": "postgresql://classcse340demo:fjhWZALWwdJrzHHljZ739Rl8nOBpTW6D@dpg-cumvid52ng1s739r6km0-a.oregon-postgres.render.com/classcse340demo_e8fa"
         }
     ]
 }

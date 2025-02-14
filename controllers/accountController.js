@@ -4,7 +4,7 @@ const accountModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 require("dotenv").config()
-
+const invModel = require("../models/inventory-model")
 
 
 
@@ -302,13 +302,16 @@ async function buildManageUsers(req, res, next) {
   // Fetch all users from the database
   const users = await accountModel.getAllUsers();
 
+  // Build the manage users view HTML
+  const manageUsersView = await utilities.buildManageUsersView(users, req.flash(), req.errors || []);
+
   res.render("account/manage-users", {
     title: "Manage Users",
-    nav,
+    nav,manageUsersView,
     errors: null,
     messages: req.flash(),
     accountData,
-    users, // Pass the list of users to the view
+    users,
   });
 }
 
@@ -332,6 +335,424 @@ async function deleteUser(req, res, next) {
 }
 
 
+
+/****************************************
+// PLACE ORDER
+****************************************/
+async function placeOrder(req, res) {
+  const { inv_id } = req.body;
+  const account_id = res.locals.accountData.account_id;
+
+  const order = await invModel.createOrder(account_id, inv_id);
+
+  if (order) {
+    req.flash("success", "Order placed successfully.");
+    res.redirect("/account/orders");
+  } else {
+    req.flash("error", "Failed to place order.");
+    res.redirect("/inv/detail/" + inv_id);
+  }
+}
+
+
+
+/****************************************
+// View Orders
+****************************************/
+async function viewOrders(req, res) {
+  const account_id = res.locals.accountData.account_id;
+  const orders = await invModel.getOrdersByAccountId(account_id);
+  const statuses = await invModel.getOrderStatuses();
+  const userOrdersView = await utilities.buildUserOrders(orders);
+  const nav = await utilities.getNav();
+
+  res.render("account/orders", {
+    title: "My Orders",
+    nav,
+    orders,
+    statuses,
+    userOrdersView,
+    errors: null,
+    messages: req.flash(),
+  });
+}
+
+
+
+/****************************************
+// Manage Orders
+****************************************/
+async function manageOrders(req, res) {
+  const orders = await invModel.getAllOrders();
+  const statuses = await invModel.getOrderStatuses();
+  const manageOrdersView = await utilities.buildManageOrders(orders, statuses);
+  const nav = await utilities.getNav();
+
+  res.render("account/manage-orders", {
+    title: "Manage Orders",
+    nav,
+    orders,
+    statuses,
+    manageOrdersView,
+    errors: null,
+    messages: req.flash(),
+  });
+}
+
+
+
+/****************************************
+ * Update the status of an order.
+ ****************************************/
+async function updateOrder(req, res) {
+  const { order_id, status_id, user_id } = req.body;
+
+  if (!order_id || !status_id || !user_id) {
+    req.flash("error", "Invalid order data.");
+    return res.redirect("/account/user-list");
+  }
+
+  try {
+    const result = await invModel.updateOrderStatus(order_id, status_id);
+
+    if (result.success) {
+      req.flash("success", result.message);
+    } else {
+      req.flash("error", result.message);
+    }
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    req.flash("error", "An error occurred while updating the order status.");
+  }
+
+  res.redirect(`/account/manage-orders/${user_id}`);
+}
+
+
+
+/****************************************
+// Delete Order
+****************************************/
+async function deleteOrder(req, res) {
+  const { order_id } = req.body;
+  const account_id = res.locals.accountData.account_id;
+  const account_type = res.locals.accountData.account_type;
+
+  try {
+    const order = await invModel.getOrderById(order_id);
+
+    if (!order) {
+      req.flash("error", "Order not found.");
+      return res.redirect("/account/orders");
+    }
+
+    if (account_type === "Client" && order.status_name !== "Pending") {
+      req.flash("error", "You can only delete orders that are pending.");
+      return res.redirect("/account/orders");
+    }
+
+    const deleteResult = await invModel.deleteOrder(order_id);
+
+    if (deleteResult) {
+      req.flash("success", "Order deleted successfully.");
+    } else {
+      req.flash("error", "Failed to delete order.");
+    }
+  } catch (error) {
+    console.error("Error deleting order:", error);
+    req.flash("error", "An error occurred while deleting the order.");
+  }
+
+  if (account_type === "Admin" || account_type === "Employee") {
+    res.redirect("/account/manage-orders");
+  } else {
+    res.redirect("/account/orders");
+  }
+}
+
+
+
+/****************************************
+// VIEW Order History
+****************************************/
+async function viewOrderHistory(req, res) {
+  const account_id = res.locals.accountData.account_id;
+  const account_type = res.locals.accountData.account_type;
+
+  try {
+    const orderHistory = await invModel.getOrderHistory(
+      account_type === "Admin" ? null : account_id
+    );
+
+    const nav = await utilities.getNav();
+    const orderHistoryView = await utilities.buildOrderHistoryView(orderHistory, req.flash());
+
+    res.render("account/order-history", {
+      title: "Order History",
+      nav,
+      orderHistoryView,
+      orderHistory,
+      errors: null,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error fetching order history:", error);
+    req.flash("error", "An error occurred while fetching order history.");
+    res.redirect("/account/");
+  }
+}
+
+
+
+/****************************************
+ * Delete a specific history item.
+****************************************/
+async function deleteHistoryItem(req, res) {
+  const { history_id } = req.body;
+
+  console.log("Received history_id:", history_id); // Debugging
+
+  if (!history_id || isNaN(history_id)) {
+    console.error("Invalid history_id:", history_id); // Debugging
+    req.flash("error", "Invalid history item ID.");
+    return res.redirect("/account/order-history");
+  }
+
+  try {
+    const result = await invModel.deleteHistoryItem(Number.parseInt(history_id, 10));
+
+    if (result.success) {
+      req.flash("success", result.message);
+    } else {
+      req.flash("error", result.message);
+    }
+  } catch (error) {
+    console.error("Error deleting history item:", error);
+    req.flash("error", "An error occurred while deleting the history item.");
+  }
+
+  res.redirect("/account/order-history");
+}
+
+
+
+/****************************************
+ * Delete all history items for the user or all users (for admins).
+ /****************************************/
+async function deleteAllHistory(req, res) {
+  const account_id = res.locals.accountData.account_id;
+  const account_type = res.locals.accountData.account_type;
+
+  try {
+    const result = await invModel.deleteAllHistory(account_type === "Admin" ? null : account_id);
+
+    if (result.success) {
+      req.flash("success", result.message);
+      if (result.count === 0) {
+        req.flash("info", "No history items were deleted. This may be because all orders are still active.");
+      }
+    } else {
+      req.flash("error", result.message);
+    }
+  } catch (error) {
+    console.error("Error deleting all history items:", error);
+    req.flash("error", "An error occurred while deleting history items.");
+  }
+
+  res.redirect("/account/order-history");
+}
+
+
+
+/****************************************
+ * Display the list of users who have placed orders.
+****************************************/
+async function viewUserList(req, res) {
+  try {
+    const users = await accountModel.getUsersWithOrders();
+    const nav = await utilities.getNav();
+
+    const userListView = await utilities.buildUserListView(users, req.flash());
+
+    res.render("account/user-list", {
+      title: "User List - Users with Orders",
+      nav,
+      userListView,
+      users,
+      errors: null,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error fetching user list:", error);
+    req.flash("error", "An error occurred while fetching the user list.");
+    res.redirect("/account/");
+  }
+}
+
+
+
+/****************************************
+ * Display the orders for a specific user.
+ ****************************************/
+async function viewUserOrders(req, res) {
+  const user_id = req.params.userId;
+  console.log("Fetching orders for user ID:", user_id); // Debugging
+
+  try {
+    const user = await accountModel.getAccountById(user_id);
+    console.log("User details:", user); // Debugging
+
+    if (!user) {
+      req.flash("error", "User not found.");
+      return res.redirect("/account/user-list");
+    }
+
+    const orders = await invModel.getOrdersByAccountId(user_id);
+    console.log("Orders for user:", orders); // Debugging
+
+    const statuses = await invModel.getOrderStatuses();
+    console.log("Statuses:", statuses); // Debugging
+
+    const manageOrdersView = await utilities.buildManageOrders(orders, statuses, user);
+    console.log("Manage Orders View:", manageOrdersView); // Debugging
+
+    const nav = await utilities.getNav();
+
+    res.render("account/manage-orders", {
+      title: "Manage Orders",
+      nav,
+      manageOrdersView,
+      errors: null,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    req.flash("error", "An error occurred while fetching the user orders.");
+    res.redirect("/account/user-list");
+  }
+}
+
+
+
+/**===========================================
+ * Display the contact form.
+ =============================================*/
+async function buildContactForm(req, res) {
+  const nav = await utilities.getNav();
+  res.render("account/contact", {
+    title: "Contact Us",
+    nav,
+    errors: null,
+    messages: req.flash(),
+  });
+}
+
+
+/**===========================================
+ * Process the contact form submission.
+=============================================*/
+async function submitContactForm(req, res) {
+  const { contact_name, contact_email, contact_message } = req.body;
+  const account_id = res.locals.accountData?.account_id || null;
+  const contact_file = req.file ? `/images/contact/${req.file.filename}` : null; // Correct file path
+
+  try {
+    const result = await accountModel.submitContactForm(account_id, contact_name, contact_email, contact_message, contact_file);
+
+    if (result) {
+      req.flash("success", "Your message has been submitted successfully.");
+    } else {
+      req.flash("error", "An error occurred while submitting your message.");
+    }
+  } catch (error) {
+    console.error("Error submitting contact form:", error);
+    req.flash("error", "An error occurred while submitting your message.");
+  }
+
+  res.redirect("/account/contact");
+}
+
+
+
+/****************************************
+ * Display all contact submissions for a user.
+/****************************************/
+async function viewUserContactSubmissions(req, res) {
+  const account_id = res.locals.accountData.account_id;
+  const nav = await utilities.getNav();
+
+  try {
+    const submissions = await accountModel.getUserContactSubmissions(account_id);
+     // Build the contact submissions view HTML
+     const submissionsView = await utilities.buildUserContactSubmissionsView(submissions, req.flash());
+
+    res.render("account/user-contact-submissions", {
+      title: "My Contact Submissions",
+      nav,
+      submissions,
+      submissionsView,
+      errors: null,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error fetching contact submissions:", error);
+    req.flash("error", "An error occurred while fetching your contact submissions.");
+    res.redirect("/account/");
+  }
+}
+
+
+
+/**===========================================
+ * Display all contact submissions (Admin only).
+ =============================================*/
+async function viewAllContactSubmissions(req, res) {
+  const nav = await utilities.getNav();
+
+  try {
+    const submissions = await accountModel.getAllContactSubmissions();
+    const submissionsView = await utilities.buildAdminContactSubmissionsView(submissions, req.flash());
+
+    res.render("account/admin-contact-submissions", {
+      title: "All Contact Submissions",
+      nav,
+      submissions,
+      submissionsView,
+      errors: null,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error fetching contact submissions:", error);
+    req.flash("error", "An error occurred while fetching contact submissions.");
+    res.redirect("/account/");
+  }
+}
+
+
+
+/**===========================================
+ * Delete a contact submission (Admin only).
+=============================================*/
+async function deleteContactSubmission(req, res) {
+  const { contact_id } = req.body;
+
+  try {
+    const result = await accountModel.deleteContactSubmission(contact_id);
+
+    if (result) {
+      req.flash("success", "Contact submission deleted successfully.");
+    } else {
+      req.flash("error", "Failed to delete contact submission.");
+    }
+  } catch (error) {
+    console.error("Error deleting contact submission:", error);
+    req.flash("error", "An error occurred while deleting the contact submission.");
+  }
+
+  res.redirect("/account/admin/contact-submissions");
+}
+
+
 module.exports = {
   buildLogin,
   buildRegister,
@@ -345,5 +766,23 @@ module.exports = {
   buildChangePassword,
 
   buildManageUsers,
-  deleteUser
+  deleteUser,
+
+  placeOrder,
+  viewOrders,
+  manageOrders,
+  updateOrder,
+  deleteOrder,
+  viewOrderHistory,
+  deleteHistoryItem,
+  deleteAllHistory,
+
+  viewUserList,
+  viewUserOrders,
+
+  buildContactForm,
+  submitContactForm,
+  viewUserContactSubmissions,
+  viewAllContactSubmissions,
+  deleteContactSubmission
 }

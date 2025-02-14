@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | CSE Motors</title>
+    <link rel="stylesheet" href="/css/account.css">
+    <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="register-container">
+            <% if (messages && Object.keys(messages).length > 0) { %>
+                <div class="flash-messages">
+                    <% Object.keys(messages).forEach(type => { %>
+                        <% messages[type].forEach(message => { %>
+                            <div class="flash-message <%= type %>">
+                                <%= message %>
+                            </div>
+                        <% }) %>
+                    <% }) %>
+                </div>
+            <% } %>
+
+            <% if (errors && errors.length > 0) { %>
+                <ul class="notice">
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            <% } %>
+
+            <h1><i class="fas fa-envelope"></i> <%= title %></h1>
+
+            <form action="/account/contact" method="post" enctype="multipart/form-data">
+                <label for="contact_name">Name: <span class="required">*</span></label>
+                <input type="text" id="contact_name" name="contact_name" required placeholder="Enter your name">
+
+                <label for="contact_email">Email: <span class="required">*</span></label>
+                <input type="email" id="contact_email" name="contact_email" required placeholder="Enter your email">
+
+                <label for="contact_message">Message: <span class="required">*</span></label>
+                <textarea id="contact_message" name="contact_message" required placeholder="Enter your message" style="height: 150px;"></textarea>
+
+                <br>
+                <label for="contact_file">Attach a file (optional):</label>
+                <input type="file" id="contact_file" name="contact_file">
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
