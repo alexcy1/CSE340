@@ -1,5 +1,5 @@
 const pool = require("../database/")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 
 
@@ -174,7 +174,7 @@ async function deleteUserById(account_id) {
   try {
     const sql = "DELETE FROM account WHERE account_id = $1";
     const result = await pool.query(sql, [account_id]);
-    return result.rowCount > 0; 
+    return result.rowCount > 0;
   } catch (error) {
     console.error("deleteUserById error: " + error);
     return false;
